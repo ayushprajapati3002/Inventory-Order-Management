@@ -110,6 +110,21 @@ npm run dev
 - **Total amount auto-calculated** by backend: `sum(qty × price)`
 - Cancelling an order **restores stock** to all products
 
+## 🌐 Deployment
+This project is configured for easy deployment on **Render** (backend) and **Vercel** (frontend).
+
+### Backend (Render)
+1. Push your project to **GitHub**.
+2. Go to [Render Dashboard](https://dashboard.render.com/) and create a new **Blueprint** service, connecting your GitHub repository.
+3. Render will auto-detect the `render.yaml` file, set up the Python environment, and expose your API.
+4. Input your `DATABASE_URL` (e.g. Supabase connection string) when prompted.
+
+### Frontend (Vercel)
+1. Go to [Vercel Dashboard](https://vercel.com/) and import your GitHub repository.
+2. Select **`frontend`** as the root directory.
+3. Add the environment variable `VITE_API_URL` pointing to your deployed Render backend (e.g. `https://inventory-order-backend.onrender.com`).
+4. Click **Deploy**.
+
 ## 🌐 Live URLs
 
 | Service | URL |
@@ -117,4 +132,4 @@ npm run dev
 | **Frontend** | https://your-app.vercel.app |
 | **Backend API** | https://your-api.onrender.com |
 | **API Docs** | https://your-api.onrender.com/docs |
-| **Docker Hub** | https://hub.docker.com/r/yourusername/inventory-backend |
+
