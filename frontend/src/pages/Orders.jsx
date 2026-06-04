@@ -158,7 +158,7 @@ export default function Orders() {
         <SearchBar value={search} onChange={setSearch} placeholder="Search by customer or order ID…" />
       </div>
 
-      <div className="table-container">
+      <div className="table-container desktop-only">
         <div className="table-scroll">
           <table>
             <thead>
@@ -213,6 +213,72 @@ export default function Orders() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile view cards */}
+      <div className="mobile-only">
+        {loading ? (
+          <div className="cards-grid">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="card-item skeleton-card">
+                <div className="skeleton skeleton-title" />
+                <div className="skeleton skeleton-line" />
+                <div className="skeleton skeleton-line" style={{ width: '60%' }} />
+              </div>
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
+          <EmptyState
+            icon={<HiOutlineClipboardList />}
+            title={search ? 'No results found' : 'No orders yet'}
+            description={search ? 'Try adjusting your search.' : 'Create your first order to get started.'}
+            action={!search && (
+              <button className="btn btn-primary" onClick={openCreate}>
+                <HiOutlinePlus /> Create Order
+              </button>
+            )}
+          />
+        ) : (
+          <div className="cards-grid">
+            {filtered.map((o) => (
+              <div key={o.id} className="card-item">
+                <div className="card-item-header">
+                  <div>
+                    <span className="card-detail-label">Order ID</span>
+                    <div className="card-item-subtitle" style={{ fontSize: '13px', fontWeight: 600 }}>{shortId(o.id)}</div>
+                  </div>
+                  <span className="badge badge-info">{formatDate(o.created_at)}</span>
+                </div>
+                <div className="card-details-grid">
+                  <div className="card-detail-item">
+                    <span className="card-detail-label">Customer</span>
+                    <span className="card-detail-value"><strong>{o.customer_name || '—'}</strong></span>
+                  </div>
+                  <div className="card-detail-item">
+                    <span className="card-detail-label">Total Amount</span>
+                    <span className="card-detail-value" style={{ fontWeight: 700, color: 'var(--accent-primary)' }}>
+                      ${parseFloat(o.total_amount).toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="card-detail-item" style={{ gridColumn: 'span 2' }}>
+                    <span className="card-detail-label">Items</span>
+                    <span className="card-detail-value" style={{ fontSize: '13px', whiteSpace: 'normal' }}>
+                      {o.product_name || '—'} (Qty: {o.quantity})
+                    </span>
+                  </div>
+                </div>
+                <div className="card-item-actions">
+                  <button className="btn-icon" onClick={() => { setViewing(o); setShowViewModal(true); }} title="View order" id={`view-order-mobile-${o.id}`}>
+                    <HiOutlineEye /> View
+                  </button>
+                  <button className="btn-icon danger" onClick={() => setDeleting(o)} title="Cancel order" id={`cancel-order-mobile-${o.id}`}>
+                    <HiOutlineTrash /> Cancel
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Create Order Modal */}

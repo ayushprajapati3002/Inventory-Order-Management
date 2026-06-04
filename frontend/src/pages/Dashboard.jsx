@@ -106,7 +106,7 @@ export default function Dashboard() {
         </Link>
       </div>
 
-      <div className="table-container">
+      <div className="table-container desktop-only">
         <div className="table-scroll">
           <table>
             <thead>
@@ -148,6 +148,49 @@ export default function Dashboard() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile view cards */}
+      <div className="mobile-only">
+        {lowCount === 0 ? (
+          <div className="card-item" style={{ textAlign: 'center', padding: '24px', color: 'var(--text-muted)' }}>
+            🎉 All products are well-stocked!
+          </div>
+        ) : (
+          <div className="cards-grid">
+            {stats.low_stock_products.map((p) => (
+              <div key={p.id} className="card-item">
+                <div className="card-item-header">
+                  <div>
+                    <h3 className="card-item-title">{p.name}</h3>
+                    <div className="card-item-subtitle">{p.sku}</div>
+                  </div>
+                  <span className={`badge ${p.quantity <= 5 ? 'badge-danger' : 'badge-warning'}`}>
+                    {p.quantity <= 5 ? 'Critical' : 'Low'}
+                  </span>
+                </div>
+                <div className="card-details-grid">
+                  <div className="card-detail-item">
+                    <span className="card-detail-label">Price per Piece</span>
+                    <span className="card-detail-value">${parseFloat(p.price).toFixed(2)}</span>
+                  </div>
+                  <div className="card-detail-item">
+                    <span className="card-detail-label">Quantity</span>
+                    <span className="card-detail-value" style={{ color: p.quantity <= 5 ? 'var(--accent-danger)' : 'var(--accent-warning)', fontWeight: 600 }}>
+                      {p.quantity}
+                    </span>
+                  </div>
+                  <div className="card-detail-item" style={{ gridColumn: 'span 2' }}>
+                    <span className="card-detail-label">Total Price</span>
+                    <span className="card-detail-value" style={{ fontSize: '15px', fontWeight: 700, color: 'var(--accent-primary)' }}>
+                      ${(parseFloat(p.price) * parseInt(p.quantity)).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

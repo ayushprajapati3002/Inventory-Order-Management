@@ -32,14 +32,16 @@ export default function Sidebar() {
 
   return (
     <>
-      <button
-        className="mobile-toggle"
-        onClick={() => setMobileOpen((o) => !o)}
-        aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-        id="sidebar-toggle"
-      >
-        {mobileOpen ? <HiOutlineX /> : <HiOutlineMenu />}
-      </button>
+      {!mobileOpen && (
+        <button
+          className="mobile-toggle"
+          onClick={() => setMobileOpen(true)}
+          aria-label="Open menu"
+          id="sidebar-toggle"
+        >
+          <HiOutlineMenu />
+        </button>
+      )}
 
       {mobileOpen && (
         <div className="sidebar-overlay" onClick={() => setMobileOpen(false)} />
@@ -54,6 +56,16 @@ export default function Sidebar() {
               <p>Order Management</p>
             </div>
           </div>
+          {mobileOpen && (
+            <button
+              className="mobile-toggle open"
+              onClick={() => setMobileOpen(false)}
+              aria-label="Close menu"
+              id="sidebar-toggle-close"
+            >
+              <HiOutlineX />
+            </button>
+          )}
         </div>
 
         <nav className="sidebar-nav">

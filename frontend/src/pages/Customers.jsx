@@ -153,7 +153,7 @@ export default function Customers() {
         <SearchBar value={search} onChange={setSearch} placeholder="Search by name, email or phone…" />
       </div>
 
-      <div className="table-container">
+      <div className="table-container desktop-only">
         <div className="table-scroll">
           <table>
             <thead>
@@ -211,6 +211,65 @@ export default function Customers() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile view cards */}
+      <div className="mobile-only">
+        {loading ? (
+          <div className="cards-grid">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="card-item skeleton-card">
+                <div className="skeleton skeleton-title" />
+                <div className="skeleton skeleton-line" />
+                <div className="skeleton skeleton-line" style={{ width: '60%' }} />
+              </div>
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
+          <EmptyState
+            icon={<HiOutlineUserGroup />}
+            title={search ? 'No results found' : 'No customers yet'}
+            description={search ? `No customers match "${search}"` : 'Add your first customer to get started.'}
+            action={!search && (
+              <button className="btn btn-primary" onClick={openAdd}>
+                <HiOutlinePlus /> Add Customer
+              </button>
+            )}
+          />
+        ) : (
+          <div className="cards-grid">
+            {filtered.map((c) => (
+              <div key={c.id} className="card-item">
+                <div className="card-item-header" style={{ alignItems: 'center' }}>
+                  <div className="customer-cell">
+                    <div className="avatar" style={{ background: avatarColor(c.full_name) }}>
+                      {initials(c.full_name)}
+                    </div>
+                    <h3 className="card-item-title">{c.full_name}</h3>
+                  </div>
+                </div>
+                <div className="card-details-grid">
+                  <div className="card-detail-item">
+                    <span className="card-detail-label">Email</span>
+                    <span className="card-detail-value" style={{ color: 'var(--text-secondary)', fontSize: '13px', wordBreak: 'break-all' }}>{c.email}</span>
+                  </div>
+                  <div className="card-detail-item">
+                    <span className="card-detail-label">Phone</span>
+                    <span className="card-detail-value">{c.phone}</span>
+                  </div>
+                </div>
+                <div className="card-item-actions">
+                  <button className="btn-icon" onClick={() => openEdit(c)} title="Edit customer" id={`edit-customer-mobile-${c.id}`}>
+                    <HiOutlinePencil /> Edit
+                  </button>
+                  <button className="btn-icon danger" onClick={() => setDeleting(c)} title="Delete customer" id={`delete-customer-mobile-${c.id}`}>
+                    <HiOutlineTrash /> Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Add / Edit Customer Modal */}

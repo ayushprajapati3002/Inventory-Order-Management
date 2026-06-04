@@ -140,7 +140,7 @@ export default function Products() {
         <SearchBar value={search} onChange={setSearch} placeholder="Search by name or SKU…" />
       </div>
 
-      <div className="table-container">
+      <div className="table-container desktop-only">
         <div className="table-scroll">
           <table>
             <thead>
@@ -198,6 +198,72 @@ export default function Products() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile view cards */}
+      <div className="mobile-only">
+        {loading ? (
+          <div className="cards-grid">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="card-item skeleton-card">
+                <div className="skeleton skeleton-title" />
+                <div className="skeleton skeleton-line" />
+                <div className="skeleton skeleton-line" style={{ width: '60%' }} />
+              </div>
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
+          <EmptyState
+            icon={<HiOutlineCube />}
+            title={search ? 'No results found' : 'No products yet'}
+            description={search ? `No products match "${search}"` : 'Add your first product to get started.'}
+            action={!search && (
+              <button className="btn btn-primary" onClick={openAdd}>
+                <HiOutlinePlus /> Add Product
+              </button>
+            )}
+          />
+        ) : (
+          <div className="cards-grid">
+            {filtered.map((p) => (
+              <div key={p.id} className="card-item">
+                <div className="card-item-header">
+                  <div>
+                    <h3 className="card-item-title">{p.name}</h3>
+                    <div className="card-item-subtitle">{p.sku}</div>
+                  </div>
+                  {p.quantity <= 10 && <span className="badge badge-warning">Low</span>}
+                </div>
+                <div className="card-details-grid">
+                  <div className="card-detail-item">
+                    <span className="card-detail-label">Price per Piece</span>
+                    <span className="card-detail-value">${parseFloat(p.price).toFixed(2)}</span>
+                  </div>
+                  <div className="card-detail-item">
+                    <span className="card-detail-label">Quantity</span>
+                    <span className="card-detail-value" style={{ color: p.quantity <= 10 ? 'var(--accent-danger)' : 'inherit', fontWeight: p.quantity <= 10 ? 600 : 400 }}>
+                      {p.quantity}
+                    </span>
+                  </div>
+                  <div className="card-detail-item" style={{ gridColumn: 'span 2' }}>
+                    <span className="card-detail-label">Total Price</span>
+                    <span className="card-detail-value" style={{ fontSize: '15px', fontWeight: 700, color: 'var(--accent-primary)' }}>
+                      ${(parseFloat(p.price) * parseInt(p.quantity)).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+                <div className="card-item-actions">
+                  <button className="btn-icon" onClick={() => openEdit(p)} title="Edit product" id={`edit-product-mobile-${p.id}`}>
+                    <HiOutlinePencil /> Edit
+                  </button>
+                  <button className="btn-icon danger" onClick={() => setDeleting(p)} title="Delete product" id={`delete-product-mobile-${p.id}`}>
+                    <HiOutlineTrash /> Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Add / Edit Modal */}
