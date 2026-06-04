@@ -31,6 +31,27 @@ docker compose up --build
 # API Docs: http://localhost:8000/docs
 ```
 
+## 🐳 Run Pre-built Docker Hub Images (Standalone)
+
+If you want to run the pre-built images from Docker Hub directly without needing the source files or Docker Compose, execute these commands:
+
+```bash
+# Create Docker Network
+docker network create inventory-network
+
+# Run PostgreSQL Database
+docker run -d --name postgres-db --network inventory-network -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=inventory_db -p 5432:5432 postgres:15
+
+# Run Backend
+docker run -d --name inventory-backend --network inventory-network -p 8000:8000 -e DATABASE_URL="postgresql://postgres:postgres@postgres-db:5432/inventory_db" daiyyaayush/inventory-order-management:backend
+
+# Run Frontend
+docker run -d --name inventory-frontend -p 3000:80 daiyyaayush/inventory-order-management:frontend
+
+# Check Running Containers
+docker ps
+```
+
 ## 🔧 Local Development (Without Docker)
 
 ### Backend
@@ -40,7 +61,7 @@ cd backend
 python -m venv venv
 venv\Scripts\activate        # Windows
 pip install -r requirements.txt
-set DATABASE_URL=postgresql://postgres:changeme@localhost:5432/inventory_db
+set DATABASE_URL=postgresql://postgres:postgres@localhost:5432/inventory_db
 uvicorn app.main:app --reload --port 8000
 ```
 
@@ -59,8 +80,8 @@ npm run dev
 |:---------|:-----------|:--------|
 | `POSTGRES_DB` | Database name | `inventory_db` |
 | `POSTGRES_USER` | Database user | `postgres` |
-| `POSTGRES_PASSWORD` | Database password | `changeme` |
-| `DATABASE_URL` | Full connection string | `postgresql://postgres:changeme@db:5432/inventory_db` |
+| `POSTGRES_PASSWORD` | Database password | `postgres` |
+| `DATABASE_URL` | Full connection string | `postgresql://postgres:postgres@db:5432/inventory_db` |
 | `VITE_API_URL` | Backend API URL for frontend | `http://localhost:8000` |
 
 ## 📡 API Endpoints
