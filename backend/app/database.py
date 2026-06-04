@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://postgres.wxsjfddxerggwzzfvktg:6iNhlyDu0XLrHmzK@aws-1-ap-northeast-2.pooler.supabase.com:6543/postgres"
+    "postgresql://postgres:postgres@localhost:5432/inventory_db"
 )
 
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
