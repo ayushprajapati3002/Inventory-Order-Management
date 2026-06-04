@@ -231,6 +231,7 @@ export default function Customers() {
           <label htmlFor="cust-name">Full Name</label>
           <input
             id="cust-name"
+            name="full_name"
             placeholder="e.g. Jane Smith"
             value={form.full_name}
             onChange={(e) => handleField('full_name', e.target.value)}
@@ -243,6 +244,7 @@ export default function Customers() {
           <label htmlFor="cust-email">Email Address</label>
           <input
             id="cust-email"
+            name="email"
             type="email"
             placeholder="e.g. jane@example.com"
             value={form.email}
@@ -256,6 +258,7 @@ export default function Customers() {
           <label htmlFor="cust-phone">Phone Number</label>
           <input
             id="cust-phone"
+            name="phone"
             placeholder="e.g. 123-456-7890"
             value={form.phone}
             onChange={(e) => handleField('phone', e.target.value)}

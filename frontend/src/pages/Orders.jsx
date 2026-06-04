@@ -254,8 +254,10 @@ export default function Orders() {
         {orderItems.map((item, idx) => (
           <div key={idx} className="order-item-row">
             <div className="form-group" style={{ margin: 0 }}>
-              <label style={{ fontSize: '11px' }}>Product</label>
+              <label htmlFor={`order-item-product-${idx}`} style={{ fontSize: '11px' }}>Product</label>
               <select
+                id={`order-item-product-${idx}`}
+                name="product_id"
                 value={item.product_id}
                 onChange={(e) => updateItem(idx, 'product_id', e.target.value)}
                 className={formErrors.items?.[idx]?.product_id ? 'input-error' : ''}
@@ -268,8 +270,10 @@ export default function Orders() {
               {formErrors.items?.[idx]?.product_id && <div className="form-error">{formErrors.items[idx].product_id}</div>}
             </div>
             <div className="form-group" style={{ margin: 0 }}>
-              <label style={{ fontSize: '11px' }}>Qty</label>
+              <label htmlFor={`order-item-qty-${idx}`} style={{ fontSize: '11px' }}>Qty</label>
               <input
+                id={`order-item-qty-${idx}`}
+                name="quantity"
                 type="number" min="1"
                 value={item.quantity}
                 onChange={(e) => updateItem(idx, 'quantity', e.target.value)}
@@ -278,8 +282,14 @@ export default function Orders() {
               {formErrors.items?.[idx]?.quantity && <div className="form-error">{formErrors.items[idx].quantity}</div>}
             </div>
             <div className="form-group" style={{ margin: 0 }}>
-              <label style={{ fontSize: '11px' }}>Subtotal</label>
-              <input value={`$${getLineSubtotal(item).toFixed(2)}`} disabled style={{ color: 'var(--accent-primary)' }} />
+              <label htmlFor={`order-item-subtotal-${idx}`} style={{ fontSize: '11px' }}>Subtotal</label>
+              <input
+                id={`order-item-subtotal-${idx}`}
+                name="subtotal"
+                value={`$${getLineSubtotal(item).toFixed(2)}`}
+                disabled
+                style={{ color: 'var(--accent-primary)' }}
+              />
             </div>
             <button
               className="btn-icon danger"

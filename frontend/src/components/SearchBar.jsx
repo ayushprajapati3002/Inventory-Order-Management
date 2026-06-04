@@ -12,6 +12,8 @@ export default function SearchBar({ value, onChange, placeholder = 'Search...' }
       <HiOutlineSearch />
       <input
         type="text"
+        id="search-input"
+        name="search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}

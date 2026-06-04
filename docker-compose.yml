@@ -3,9 +3,6 @@ version: '3.8'
 services:
   backend:
     build: ./backend
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     environment:
       DATABASE_URL: ${DATABASE_URL}
     ports:
@@ -17,9 +14,6 @@ services:
       context: ./frontend
       args:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     depends_on:
       - backend
     ports:

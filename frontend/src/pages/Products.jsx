@@ -218,6 +218,7 @@ export default function Products() {
           <label htmlFor="prod-name">Product Name</label>
           <input
             id="prod-name"
+            name="name"
             placeholder="e.g. Widget A"
             value={form.name}
             onChange={(e) => handleField('name', e.target.value)}
@@ -230,6 +231,7 @@ export default function Products() {
           <label htmlFor="prod-sku">SKU / Code</label>
           <input
             id="prod-sku"
+            name="sku"
             placeholder="e.g. WDG-001"
             value={form.sku}
             onChange={(e) => handleField('sku', e.target.value)}
@@ -243,6 +245,7 @@ export default function Products() {
             <label htmlFor="prod-price">Price per Piece ($)</label>
             <input
               id="prod-price"
+              name="price"
               type="number" step="0.01" min="0.01"
               placeholder="0.00"
               value={form.price}
@@ -256,6 +259,7 @@ export default function Products() {
             <label htmlFor="prod-qty">Quantity</label>
             <input
               id="prod-qty"
+              name="quantity"
               type="number" min="0"
               placeholder="0"
               value={form.quantity}
@@ -267,8 +271,10 @@ export default function Products() {
           </div>
         </div>
         <div className="form-group">
-          <label>Total Price ($)</label>
+          <label htmlFor="prod-total-price">Total Price ($)</label>
           <input
+            id="prod-total-price"
+            name="total_price"
             value={(parseFloat(form.price || 0) * parseInt(form.quantity || 0)).toFixed(2)}
             disabled
             style={{ background: 'var(--bg-input)', color: 'var(--accent-primary)', fontWeight: 'bold' }}
