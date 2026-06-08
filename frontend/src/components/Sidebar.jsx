@@ -8,6 +8,7 @@ import {
   HiOutlineMenu,
   HiOutlineX
 } from 'react-icons/hi';
+import { FaCubes } from 'react-icons/fa';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: HiOutlineViewGrid },
@@ -50,9 +51,9 @@ export default function Sidebar() {
       <aside className={`sidebar ${mobileOpen ? 'open' : ''}`} aria-label="Main navigation">
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <div className="sidebar-logo-icon">I</div>
+            <div className="sidebar-logo-icon"><FaCubes size={20} /></div>
             <div className="sidebar-logo-text">
-              <h1>Inventory</h1>
+              <h1>StockSync</h1>
               <p>Order Management</p>
             </div>
           </div>
