@@ -79,7 +79,8 @@ class Order(Base):
     customer_id = Column(
         UUID(as_uuid=True),
         ForeignKey("customers.id", ondelete="CASCADE"),
-        nullable=False
+        nullable=False,
+        index=True
     )
     total_amount = Column(Numeric(12, 2), nullable=False, default=0)
     product_name = Column(String(500), nullable=True)
@@ -109,12 +110,14 @@ class OrderItem(Base):
     order_id = Column(
         Integer,
         ForeignKey("orders.id", ondelete="CASCADE"),
-        nullable=False
+        nullable=False,
+        index=True
     )
     product_id = Column(
         UUID(as_uuid=True),
         ForeignKey("products.id", ondelete="SET NULL"),
-        nullable=True
+        nullable=True,
+        index=True
     )
     product_name = Column(String(255), nullable=True)
     product_sku = Column(String(100), nullable=True)

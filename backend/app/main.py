@@ -61,6 +61,11 @@ try:
         conn.execute(text("ALTER TABLE orders ADD COLUMN IF NOT EXISTS product_name VARCHAR(500);"))
         conn.execute(text("ALTER TABLE orders ADD COLUMN IF NOT EXISTS quantity INTEGER DEFAULT 0;"))
         
+        # Performance: Create covering indexes for foreign keys
+        conn.execute(text("CREATE INDEX IF NOT EXISTS ix_orders_customer_id ON orders (customer_id);"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS ix_order_items_order_id ON order_items (order_id);"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS ix_order_items_product_id ON order_items (product_id);"))
+        
         # Security: Enable Row Level Security (RLS) to resolve Supabase warnings
         # This secures the tables from unauthorized access via PostgREST API
         # while still allowing the FastAPI backend (which uses a direct connection) full access.
