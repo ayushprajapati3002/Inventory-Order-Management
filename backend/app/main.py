@@ -54,13 +54,22 @@ except Exception as e:
 # Create all database tables on startup
 Base.metadata.create_all(bind=engine)
 
-# Run migrations to add product_name and quantity columns to orders
+# Run migrations and security configurations
 try:
     with engine.begin() as conn:
+        # Migrations
         conn.execute(text("ALTER TABLE orders ADD COLUMN IF NOT EXISTS product_name VARCHAR(500);"))
         conn.execute(text("ALTER TABLE orders ADD COLUMN IF NOT EXISTS quantity INTEGER DEFAULT 0;"))
+        
+        # Security: Enable Row Level Security (RLS) to resolve Supabase warnings
+        # This secures the tables from unauthorized access via PostgREST API
+        # while still allowing the FastAPI backend (which uses a direct connection) full access.
+        conn.execute(text("ALTER TABLE customers ENABLE ROW LEVEL SECURITY;"))
+        conn.execute(text("ALTER TABLE products ENABLE ROW LEVEL SECURITY;"))
+        conn.execute(text("ALTER TABLE orders ENABLE ROW LEVEL SECURITY;"))
+        conn.execute(text("ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;"))
 except Exception as e:
-    print(f"Migration error: {e}")
+    print(f"Migration/Security error: {e}")
 
 app = FastAPI(
     title="Inventory & Order Management System",
